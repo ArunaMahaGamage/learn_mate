@@ -122,8 +122,10 @@ class LoginScreen extends ConsumerWidget {
                   );
                 },
                 loading: () => const CircularProgressIndicator(),
-                error: (e, _) => Text('Error: $e',
-                    style: const TextStyle(color: Colors.red)),
+                error: (err, _) => Text(
+                  err.toString(),
+                  style: const TextStyle(color: Colors.red),
+                ),
               ),
             ],
           ),
