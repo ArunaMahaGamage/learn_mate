@@ -94,14 +94,14 @@ class LoginScreen extends ConsumerWidget {
                       const SizedBox(height: 8),
 
                       // Anonymous login
-                      SizedBox(
+                      /*SizedBox(
                         width: double.infinity,
                         child: CustomButton(
                           label: 'Continue (Anonymous)',
                           onPressed: () =>
                               ref.read(authControllerProvider).signInAnonymously(),
                         ),
-                      ),
+                      ),*/
                     ],
                   );
                 },
