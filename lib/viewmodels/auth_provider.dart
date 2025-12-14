@@ -12,6 +12,14 @@ final authControllerProvider = Provider<AuthController>((ref) {
 class AuthController {
   final _auth = FirebaseAuth.instance;
 
+  Future<void> signInWithEmail(String email, String password) async {
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
+  }
+
+  Future<void> registerWithEmail(String email, String password) async {
+    await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  }
+
   Future<void> signInAnonymously() async {
     await _auth.signInAnonymously();
   }
