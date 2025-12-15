@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../viewmodels/auth_provider.dart';
+import '../core/routes.dart';
 
-/// Provider to access current Firebase user
+/// Provider to access current Firebase user (Existing)
 final firebaseUserProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.authStateChanges();
 });
@@ -13,6 +15,8 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(firebaseUserProvider);
+    // Get the AuthController instance
+    final authController = ref.read(authControllerProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -20,11 +24,17 @@ class ProfileScreen extends ConsumerWidget {
         child: userAsync.when(
           data: (user) {
             if (user == null) {
-              return const Center(child: Text('No user logged in'));
+              Future.microtask(
+                () => Navigator.pushReplacementNamed(context, Routes.login),
+              );
+              return const Center(
+                child: Text('No user logged in. Redirecting...'),
+              );
             }
             return Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Profile photo
                   CircleAvatar(
@@ -32,7 +42,7 @@ class ProfileScreen extends ConsumerWidget {
                     backgroundImage: user.photoURL != null
                         ? NetworkImage(user.photoURL!)
                         : const AssetImage('assets/default_avatar.png')
-                    as ImageProvider,
+                              as ImageProvider,
                   ),
                   const SizedBox(height: 20),
 
@@ -48,6 +58,45 @@ class ProfileScreen extends ConsumerWidget {
                     user.email ?? 'No email available',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  const SizedBox(height: 40),
+
+                  // --- LOGOUT FUNCTIONALITY ADDED HERE ---
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.logout),
+                      label: const Text('Logout'),
+                      onPressed: () async {
+                        try {
+                          await authController.signOut();
+                          // Navigate back to Login after successful logout
+                          if (context.mounted) {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              Routes.login,
+                              (route) => false, // Clears all previous routes
+                            );
+                          }
+                        } catch (e) {
+                          // Handle logout error (e.g., show a Snackbar)
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Logout Failed: $e')),
+                            );
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red.shade600,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // ----------------------------------------
                 ],
               ),
             );
@@ -61,4 +110,3 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 }
-
