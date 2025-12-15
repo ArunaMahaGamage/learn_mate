@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:learn_mate/models/settings.dart';
+import 'package:learn_mate/viewmodels/settings_provider.dart';
 import 'package:learn_mate/views/signup_screen.dart';
 import 'core/routes.dart';
 import 'views/splash_screen.dart';
@@ -19,18 +22,32 @@ import 'views/profile_screen.dart';
 import 'views/progress_tracker_screen.dart';
 import 'views/settings_screen.dart';
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider);
     return MaterialApp(
       title: 'Rural Student Support',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorSchemeSeed: const Color(0xFF1A73E8),
         useMaterial3: true,
+        brightness: Brightness.light, // Base light theme
       ),
+      darkTheme: ThemeData(
+        // Define a dark theme
+        colorSchemeSeed: const Color(0xFF1A73E8),
+        useMaterial3: true,
+        brightness: Brightness.dark,
+      ),
+      // CRITICAL: Set the themeMode based on the provider state
+      themeMode: switch (settings.themeMode) {
+        AppThemeMode.light => ThemeMode.light,
+        AppThemeMode.dark => ThemeMode.dark,
+        AppThemeMode.system => ThemeMode.system,
+      },
       initialRoute: Routes.splash,
       routes: {
         Routes.splash: (_) => const SplashScreen(),
