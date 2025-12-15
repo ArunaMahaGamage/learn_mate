@@ -12,6 +12,7 @@ import 'views/resource_detail_screen.dart';
 import 'views/forum_screen.dart';
 import 'views/question_detail_screen.dart';
 import 'views/quiz_screen.dart';
+import 'views/quiz_creation_screen.dart';
 import 'views/favorites_screen.dart';
 import 'views/notifications_screen.dart';
 import 'views/profile_screen.dart';
@@ -44,6 +45,7 @@ class App extends StatelessWidget {
         Routes.forum: (_) => const ForumScreen(),
         Routes.questionDetail: (_) => const QuestionDetailScreen(),
         Routes.quiz: (_) => const QuizScreen(),
+        Routes.quizCreation: (_) => const QuizCreationScreen(),
         Routes.favorites: (_) => const FavoritesScreen(),
         Routes.notifications: (_) => const NotificationsScreen(),
         Routes.profile: (_) => const ProfileScreen(),
