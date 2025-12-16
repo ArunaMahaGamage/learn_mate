@@ -48,7 +48,7 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(controller: titleCtrl, decoration: const InputDecoration(labelText: 'Subject')),
+          TextField(controller: titleCtrl, decoration: const InputDecoration(labelText: 'Subject title')),
           const SizedBox(height: 8),
           TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'Description')),
           const SizedBox(height: 8),
@@ -61,8 +61,8 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
           onPressed: () async {
             final l = Lesson(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
-              title: subject,
-              subject: descCtrl.text,
+              title: titleCtrl.text,
+              subject: subject,
               type: 'pdf',
               downloadUrl: 'https://example.com/notes.pdf',
               offlineAvailable: true,
