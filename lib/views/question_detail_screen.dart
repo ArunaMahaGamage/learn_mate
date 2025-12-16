@@ -14,26 +14,34 @@ class QuestionDetailScreen extends ConsumerWidget {
       appBar: AppBar(title: Text(q.title)),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(q.content),
-          const SizedBox(height: 16),
-          TextField(controller: controller, decoration: const InputDecoration(labelText: 'Write an answer')),
-          const SizedBox(height: 12),
-          ElevatedButton(
-            onPressed: () {
-              ref.read(forumProvider.notifier).addAnswer(q.id, {
-                'userId': 'demo',
-                'content': controller.text,
-                'createdAt': DateTime.now().toIso8601String(),
-              });
-              controller.clear();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Answer posted')));
-            },
-            child: const Text('Post Answer'),
-          ),
-          const SizedBox(height: 12),
-          const Text('Answers (live view omitted in scaffold)'),
-        ]),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(q.content),
+            const SizedBox(height: 16),
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(labelText: 'Write an answer'),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(forumProvider.notifier).addAnswer(q.id, {
+                  'userId': 'demo',
+                  'content': controller.text,
+                  'createdAt': DateTime.now().toIso8601String(),
+                });
+                controller.clear();
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Answer posted')));
+              },
+              child: const Text('Post Answer'),
+            ),
+            const SizedBox(height: 12),
+            const Text('Answers (live view omitted in scaffold)'),
+          ],
+        ),
       ),
     );
   }

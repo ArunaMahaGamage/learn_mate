@@ -9,7 +9,14 @@ class Question {
   final List<String> tags;
   final DateTime createdAt;
 
-  Question({required this.id, required this.userId, required this.title, required this.content, required this.tags, required this.createdAt});
+  Question({
+    required this.id,
+    required this.userId,
+    required this.title,
+    required this.content,
+    required this.tags,
+    required this.createdAt,
+  });
 
   Map<String, dynamic> toMap() => {
     'id': id,
@@ -30,7 +37,9 @@ class Question {
   );
 }
 
-final forumProvider = StateNotifierProvider<ForumNotifier, List<Question>>((ref) {
+final forumProvider = StateNotifierProvider<ForumNotifier, List<Question>>((
+  ref,
+) {
   return ForumNotifier();
 });
 
@@ -42,8 +51,13 @@ class ForumNotifier extends StateNotifier<List<Question>> {
   final _firestore = FirebaseFirestore.instance;
 
   Future<void> load() async {
-    final snap = await _firestore.collection('forum').orderBy('createdAt', descending: true).get();
-    state = snap.docs.map((d) => Question.fromMap({'id': d.id, ...d.data()})).toList();
+    final snap = await _firestore
+        .collection('forum')
+        .orderBy('createdAt', descending: true)
+        .get();
+    state = snap.docs
+        .map((d) => Question.fromMap({'id': d.id, ...d.data()}))
+        .toList();
   }
 
   Future<void> addQuestion(Question q) async {
@@ -52,6 +66,10 @@ class ForumNotifier extends StateNotifier<List<Question>> {
   }
 
   Future<void> addAnswer(String questionId, Map<String, dynamic> answer) async {
-    await _firestore.collection('forum').doc(questionId).collection('answers').add(answer);
+    await _firestore
+        .collection('forum')
+        .doc(questionId)
+        .collection('answers')
+        .add(answer);
   }
 }

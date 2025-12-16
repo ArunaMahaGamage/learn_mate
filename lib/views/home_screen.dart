@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
       _HomeTile('Profile', Icons.person, Routes.profile),
       _HomeTile('Progress', Icons.insights, Routes.progress),
       _HomeTile('Settings', Icons.settings, Routes.settings),
+      _HomeTile('AI Assistant', Icons.psychology, Routes.aiAssistant),
     ];
 
     return Scaffold(
@@ -44,7 +45,16 @@ class _Tile extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () => Navigator.pushNamed(context, t.route),
-        child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [Icon(t.icon, size: 36), const SizedBox(height: 8), Text(t.title)])),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(t.icon, size: 36),
+              const SizedBox(height: 8),
+              Text(t.title),
+            ],
+          ),
+        ),
       ),
     );
   }

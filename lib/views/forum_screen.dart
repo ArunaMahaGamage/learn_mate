@@ -20,7 +20,11 @@ class ForumScreen extends ConsumerWidget {
             child: ListTile(
               title: Text(q.title),
               subtitle: Text(q.content),
-              onTap: () => Navigator.pushNamed(context, Routes.questionDetail, arguments: q),
+              onTap: () => Navigator.pushNamed(
+                context,
+                Routes.questionDetail,
+                arguments: q,
+              ),
             ),
           );
         },

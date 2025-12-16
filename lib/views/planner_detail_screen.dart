@@ -58,34 +58,32 @@ class PlannerDetailScreen extends ConsumerWidget {
             Text('Sub-Tasks:', style: Theme.of(context).textTheme.titleMedium),
             if (currentItem.tasks.isEmpty)
               const Text('No sub-tasks defined for this plan.'),
-            ...currentItem.tasks
-                .map(
-                  (task) => Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          isCompleted
-                              ? Icons.check_box
-                              : Icons.check_box_outline_blank,
-                          color: isCompleted ? Colors.green : Colors.grey,
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            task,
-                            style: TextStyle(
-                              decoration: isCompleted
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                            ),
-                          ),
-                        ),
-                      ],
+            ...currentItem.tasks.map(
+              (task) => Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      isCompleted
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
+                      color: isCompleted ? Colors.green : Colors.grey,
                     ),
-                  ),
-                )
-                .toList(),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        task,
+                        style: TextStyle(
+                          decoration: isCompleted
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
             const SizedBox(height: 40),
 
