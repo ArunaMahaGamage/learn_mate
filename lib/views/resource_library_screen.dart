@@ -15,7 +15,7 @@ class ResourceLibraryScreen extends ConsumerWidget {
     final String subject = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Resources')),
+      appBar: AppBar(title: Text('$subject')),
       body: ListView.builder(
         itemCount: resources.length,
         itemBuilder: (_, i) {
