@@ -47,22 +47,28 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
     context: context,
     builder: (_) => AlertDialog(
       title: const Text('Add Resources'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(controller: titleCtrl, decoration: const InputDecoration(labelText: 'Subject title')),
-          const SizedBox(height: 8),
-          TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'Description')),
-          const SizedBox(height: 8),
-          TextField(controller: resourcesURLCtrl, decoration: const InputDecoration(labelText: 'Resources URL')),
-          const SizedBox(height: 8),
-          AvailabilitySelector(
-            initialValue: _selectedAvailability,
-              onChanged: (value) {
-                _selectedAvailability = value;
-              } // You can now use _selectedAvailability anywhere in this screen debugPrint("Selected availability: $value"); },
-          ),
-        ],
+      content: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          left: 16, right: 16, top: 8,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(controller: titleCtrl, decoration: const InputDecoration(labelText: 'Subject title')),
+            const SizedBox(height: 8),
+            TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'Description')),
+            const SizedBox(height: 8),
+            TextField(controller: resourcesURLCtrl, decoration: const InputDecoration(labelText: 'Resources URL')),
+            const SizedBox(height: 8),
+            AvailabilitySelector(
+              initialValue: _selectedAvailability,
+                onChanged: (value) {
+                  _selectedAvailability = value;
+                } // You can now use _selectedAvailability anywhere in this screen debugPrint("Selected availability: $value"); },
+            ),
+          ],
+        ),
       ),
       actions: [
         TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
