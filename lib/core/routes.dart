@@ -12,10 +12,7 @@ class Routes {
   static const questionDetail = '/question_detail';
   static const quiz = '/quiz';
   static const quizCreation = '/quizCreation';
-  static const favorites = '/favorites';
-  static const notifications = '/notifications';
   static const profile = '/profile';
-  static const progress = '/progress';
   static const settings = '/settings';
   static const aiAssistant = '/ai_assistant';
   static const flashcards = '/flashcards';

@@ -10,14 +10,11 @@ class HomeScreen extends StatelessWidget {
       _HomeTile('Planner', Icons.event_note, Routes.planner),
       _HomeTile('Resources', Icons.menu_book, Routes.resources),
       _HomeTile('Forum', Icons.forum, Routes.forum),
-      _HomeTile('Quiz', Icons.quiz, Routes.quiz),
-      _HomeTile('Favorites', Icons.favorite, Routes.favorites),
-      _HomeTile('Notifications', Icons.notifications, Routes.notifications),
-      _HomeTile('Profile', Icons.person, Routes.profile),
-      _HomeTile('Progress', Icons.insights, Routes.progress),
-      _HomeTile('Settings', Icons.settings, Routes.settings),
-      _HomeTile('AI Assistant', Icons.psychology, Routes.aiAssistant),
       _HomeTile('Flashcards', Icons.style, Routes.flashcards),
+      _HomeTile('Quiz', Icons.quiz, Routes.quiz),
+      _HomeTile('AI Assistant', Icons.psychology, Routes.aiAssistant),
+      _HomeTile('Profile', Icons.person, Routes.profile),
+      _HomeTile('Settings', Icons.settings, Routes.settings),
     ];
 
     return Scaffold(
