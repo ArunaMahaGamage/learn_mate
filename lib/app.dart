@@ -17,12 +17,10 @@ import 'views/forum_screen.dart';
 import 'views/question_detail_screen.dart';
 import 'views/quiz_screen.dart';
 import 'views/quiz_creation_screen.dart';
-import 'views/favorites_screen.dart';
-import 'views/notifications_screen.dart';
 import 'views/profile_screen.dart';
-import 'views/progress_tracker_screen.dart';
 import 'views/settings_screen.dart';
 import 'views/ai_assistant_screen.dart';
+import 'views/flashcard_screen.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -65,12 +63,10 @@ class App extends ConsumerWidget {
         Routes.questionDetail: (_) => const QuestionDetailScreen(),
         Routes.quiz: (_) => const QuizScreen(),
         Routes.quizCreation: (_) => const QuizCreationScreen(),
-        Routes.favorites: (_) => const FavoritesScreen(),
-        Routes.notifications: (_) => const NotificationsScreen(),
         Routes.profile: (_) => const ProfileScreen(),
-        Routes.progress: (_) => const ProgressTrackerScreen(),
         Routes.settings: (_) => const SettingsScreen(),
         Routes.aiAssistant: (context) => const AIAssistantScreen(),
+        Routes.flashcards: (context) => const FlashcardScreen(),
       },
     );
   }

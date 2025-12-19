@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -11,7 +12,7 @@ class ChatMessage {
 class ChatNotifier extends StateNotifier<List<ChatMessage>> {
   ChatNotifier() : super([]);
 
-  final String _apiKey = 'AIzaSyBbyU6VYkHhTchv2fRN_WYiINFgmbWJ8wA';
+  final String _apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
   bool isLoading = false;
 
   Future<void> sendMessage(String text) async {

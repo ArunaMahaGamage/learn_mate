@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../viewmodels/quiz_provider.dart';
 import '../models/quiz.dart';
 import '../core/routes.dart';
+import '../components/quiz_list_tile.dart'; //custom component
 
 class QuizScreen extends ConsumerWidget {
   const QuizScreen({super.key});
@@ -21,16 +22,15 @@ class QuizScreen extends ConsumerWidget {
   }
 }
 
-//QUIZ LIST VIEW
 class QuizListView extends ConsumerWidget {
   const QuizListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the list of quizzes
     final quizzes = ref.watch(quizListProvider);
     final listNotifier = ref.read(quizListProvider.notifier);
 
+    // Initial load if list is empty
     if (quizzes.isEmpty) {
       listNotifier.loadQuizzes();
     }
@@ -41,9 +41,7 @@ class QuizListView extends ConsumerWidget {
         onRefresh: listNotifier.loadQuizzes,
         child: quizzes.isEmpty
             ? const Center(
-                child: Text(
-                  'No quizzes available. Pull down to refresh or create one!',
-                ),
+                child: Text('No quizzes available. Pull down to refresh!'),
               )
             : ListView.builder(
                 padding: const EdgeInsets.all(16),
@@ -64,87 +62,6 @@ class QuizListView extends ConsumerWidget {
   }
 }
 
-class QuizListTile extends ConsumerWidget {
-  final Quiz quiz;
-  const QuizListTile({super.key, required this.quiz});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final quizTakingNotifier = ref.read(quizTakingProvider.notifier);
-    final quizListNotifier = ref.read(quizListProvider.notifier);
-
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        title: Text(quiz.title, style: Theme.of(context).textTheme.titleMedium),
-        subtitle: Text(
-          '${quiz.questions.length} Questions | Created by: ${quiz.createdBy}',
-        ),
-        trailing: PopupMenuButton<String>(
-          onSelected: (value) async {
-            if (value == 'edit') {
-              // U - Update (Edit)
-              Navigator.pushNamed(
-                context,
-                Routes.quizCreation,
-                arguments: quiz,
-              );
-            } else if (value == 'delete') {
-              // D - Delete
-              final confirmed = await showDialog<bool>(
-                context: context,
-                builder: (ctx) => AlertDialog(
-                  title: const Text('Confirm Deletion'),
-                  content: Text(
-                    'Are you sure you want to delete "${quiz.title}"?',
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(ctx).pop(false),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.of(ctx).pop(true),
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-
-              if (!context.mounted) return;
-
-              if (confirmed == true) {
-                quizListNotifier.deleteQuiz(quiz.id);
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('Quiz deleted!')));
-              }
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(value: 'edit', child: Text('Edit Quiz (U)')),
-            const PopupMenuItem(
-              value: 'delete',
-              child: Text(
-                'Delete Quiz (D)',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
-        ),
-        onTap: () {
-          // R - Read (Start Quiz Taking)
-          quizTakingNotifier.startQuiz(quiz);
-        },
-      ),
-    );
-  }
-}
-
 class QuizTakingView extends StatelessWidget {
   final QuizTakingState quizTakingState;
   final QuizTakingNotifier quizTakingNotifier;
@@ -159,6 +76,7 @@ class QuizTakingView extends StatelessWidget {
   Widget build(BuildContext context) {
     final quiz = quizTakingState.activeQuiz!;
 
+    // Show results if the quiz is finished
     if (quizTakingState.result != null) {
       return _QuizResultView(
         result: quizTakingState.result!,
@@ -178,18 +96,23 @@ class QuizTakingView extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => quizTakingNotifier.endQuiz(),
-          tooltip: 'Exit Quiz',
         ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          LinearProgressIndicator(
+            value: totalQuestions > 0 ? answeredCount / totalQuestions : 0,
+            backgroundColor: Colors.grey.shade200,
+          ),
+          const SizedBox(height: 12),
           Text(
             'Progress: $answeredCount/$totalQuestions answered',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 20),
 
+          // Question List
           for (var i = 0; i < totalQuestions; i++)
             _QuestionCard(
               index: i,
@@ -199,15 +122,19 @@ class QuizTakingView extends StatelessWidget {
               onAnswerSelected: quizTakingNotifier.selectAnswer,
             ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 30),
 
           SizedBox(
             width: double.infinity,
+            height: 50,
             child: FilledButton(
               onPressed: isComplete ? quizTakingNotifier.submitQuiz : null,
-              child: Text(isComplete ? 'Submit Quiz' : 'Answer all questions'),
+              child: Text(
+                isComplete ? 'Submit Quiz' : 'Please answer all questions',
+              ),
             ),
           ),
+          const SizedBox(height: 40),
         ],
       ),
     );
@@ -219,42 +146,58 @@ class _QuestionCard extends StatelessWidget {
   final QuizQuestion question;
   final int? selectedAnswerIndex;
   final void Function(String questionId, int selectedIndex) onAnswerSelected;
+
   const _QuestionCard({
     required this.index,
     required this.question,
     required this.selectedAnswerIndex,
     required this.onAnswerSelected,
   });
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 16),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${index + 1}. ${question.question}',
-              style: Theme.of(context).textTheme.titleMedium,
+              'Question ${index + 1}',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 8),
-
+            Text(
+              question.question,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 16),
             ...List.generate(question.options.length, (i) {
               final isSelected = i == selectedAnswerIndex;
-              return ListTile(
-                dense: true,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                leading: Icon(
-                  isSelected
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_unchecked,
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: isSelected
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey.shade300,
+                    width: isSelected ? 2 : 1,
+                  ),
                   color: isSelected
-                      ? Theme.of(context).colorScheme.primary
-                      : Colors.grey,
+                      ? Theme.of(context).primaryColor.withOpacity(0.05)
+                      : null,
                 ),
-                title: Text(question.options[i]),
-                onTap: () => onAnswerSelected(question.id, i),
+                child: RadioListTile<int>(
+                  value: i,
+                  groupValue: selectedAnswerIndex,
+                  title: Text(question.options[i]),
+                  onChanged: (_) => onAnswerSelected(question.id, i),
+                ),
               );
             }),
           ],
@@ -276,171 +219,64 @@ class _QuizResultView extends StatelessWidget {
     required this.onTryAgain,
     required this.onEnd,
   });
+
   @override
   Widget build(BuildContext context) {
-    final pass = result.scorePercentage >= 70;
+    final isPassed = result.scorePercentage >= 70;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quiz Results'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: onEnd,
-        ),
-      ),
+      appBar: AppBar(title: const Text('Results')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Card(
-            color: pass ? Colors.green.shade50 : Colors.red.shade50,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Text(
-                    pass ? 'Congratulations!' : 'Keep Practicing!',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '${result.scorePercentage}%',
-                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      color: pass ? Colors.green.shade700 : Colors.red.shade700,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    '${result.correctAnswers} out of ${result.totalQuestions} correct.',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: isPassed ? Colors.green.shade50 : Colors.red.shade50,
+              borderRadius: BorderRadius.circular(16),
             ),
-          ),
-          const SizedBox(height: 20),
-          Text('Quiz Review:', style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 10),
-
-          for (var i = 0; i < quiz.questions.length; i++)
-            _ResultQuestionReview(
-              index: i,
-              question: quiz.questions[i],
-              userAnswerIndex: result.userAnswers[quiz.questions[i].id],
-            ),
-
-          const SizedBox(height: 20),
-
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              icon: const Icon(Icons.refresh),
-              onPressed: onTryAgain,
-              label: const Text('Review Again'),
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              icon: const Icon(Icons.exit_to_app),
-              onPressed: onEnd,
-              label: const Text('Back to Quizzes'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ResultQuestionReview extends StatelessWidget {
-  final int index;
-  final QuizQuestion question;
-  final int? userAnswerIndex;
-
-  const _ResultQuestionReview({
-    required this.index,
-    required this.question,
-    required this.userAnswerIndex,
-  });
-  @override
-  Widget build(BuildContext context) {
-    final isCorrect = userAnswerIndex == question.correctAnswerIndex;
-    final statusColor = isCorrect ? Colors.green.shade700 : Colors.red.shade700;
-
-    return Card(
-      color: isCorrect ? Colors.green.shade50 : Colors.red.shade50,
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
               children: [
-                Expanded(
-                  child: Text(
-                    '${index + 1}. ${question.question}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                Icon(
+                  isPassed ? Icons.emoji_events : Icons.sentiment_dissatisfied,
+                  size: 64,
+                  color: isPassed ? Colors.green : Colors.red,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Your Score: ${result.scorePercentage}%',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: isPassed
+                        ? Colors.green.shade800
+                        : Colors.red.shade800,
                   ),
                 ),
-                Icon(
-                  isCorrect ? Icons.check_circle : Icons.cancel,
-                  color: statusColor,
+                Text(
+                  '${result.correctAnswers} / ${result.totalQuestions} Correct',
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-
-            ...List.generate(question.options.length, (i) {
-              final isUserAnswer = i == userAnswerIndex;
-              final isCorrectAnswer = i == question.correctAnswerIndex;
-
-              Widget? trailingIcon;
-              Color tileColor = Colors.transparent;
-
-              if (isCorrectAnswer) {
-                trailingIcon = const Icon(Icons.check, color: Colors.green);
-                tileColor = Colors.green.shade100;
-              } else if (isUserAnswer) {
-                trailingIcon = const Icon(Icons.close, color: Colors.red);
-                tileColor = Colors.red.shade100;
-              }
-
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 4.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: tileColor,
-                    borderRadius: BorderRadius.circular(4),
-                    border: isUserAnswer && !isCorrect
-                        ? Border.all(color: Colors.red, width: 2)
-                        : null,
-                  ),
-                  child: ListTile(
-                    dense: true,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                    leading: isUserAnswer
-                        ? Icon(Icons.person, color: statusColor, size: 18)
-                        : null,
-                    title: Text(
-                      question.options[i],
-                      style: TextStyle(
-                        fontWeight: isCorrectAnswer
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                      ),
-                    ),
-                    trailing: trailingIcon,
-                  ),
+          ),
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: onEnd,
+                  child: const Text('Exit'),
                 ),
-              );
-            }),
-          ],
-        ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: FilledButton(
+                  onPressed: onTryAgain,
+                  child: const Text('Try Again'),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
