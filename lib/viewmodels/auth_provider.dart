@@ -65,7 +65,7 @@ class AuthController {
     return _auth.currentUser?.email;
   }
 
-  /// Update user profile with new display name and/or profile photo
+  /// Update user profile
   Future<void> updateUserProfile({
     String? displayName,
     File? profilePhotoFile,
@@ -79,29 +79,26 @@ class AuthController {
         'updatedAt': FieldValue.serverTimestamp(),
       };
 
-      // Add display name if provided
+      // set display name
       if (displayName != null && displayName.isNotEmpty) {
         updateData['displayName'] = displayName;
       }
 
-      // Convert and add profile photo if provided
+      // set profile photo
       if (profilePhotoFile != null) {
         final photoBase64 = await _convertImageToBase64(profilePhotoFile);
         updateData['profilePhotoBase64'] = photoBase64;
       }
 
-      // Update Firestore user document
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .set(updateData, SetOptions(merge: true));
 
-      // Update Firebase Auth user profile
       await user.updateProfile(
         displayName: displayName ?? user.displayName,
       );
 
-      // Refresh user data
       await user.reload();
       log('Profile updated successfully in Firestore');
     } catch (e) {
@@ -110,7 +107,7 @@ class AuthController {
     }
   }
 
-  /// Convert image file to base64 string
+  /// Convert image
   Future<String> _convertImageToBase64(File imageFile) async {
     try {
       log('Converting image to base64...');

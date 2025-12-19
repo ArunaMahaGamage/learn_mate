@@ -13,7 +13,7 @@ final firebaseUserProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.authStateChanges();
 });
 
-/// Provider to load user data from Firestore
+/// Load user data from Firebase
 final userDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
   final authUser = ref.watch(firebaseUserProvider);
   
@@ -61,41 +61,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
 
-  Future<void> _showImageSourceBottomSheet() async {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Select Image Source',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.camera_alt, color: Colors.blue),
-              title: const Text('Take Photo'),
-              onTap: () {
-                Navigator.pop(context);
-                _pickImage(source: ImageSource.camera);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.image, color: Colors.green),
-              title: const Text('Choose from Gallery'),
-              onTap: () {
-                Navigator.pop(context);
-                _pickImage(source: ImageSource.gallery);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Future<void> _updateProfile(
     User user,
     AuthController authController,
@@ -109,7 +74,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         profilePhotoFile: _selectedImage,
       );
 
-      // Refresh the user data
       await user.reload();
 
       if (mounted) {
