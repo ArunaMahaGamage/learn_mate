@@ -1,11 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
-enum Availability { online, offline }
-
 class AvailabilitySelector extends StatefulWidget {
-  final ValueChanged<bool> onChanged; // callback to parent
+  final ValueChanged<bool> onChanged;
   final bool initialValue;
 
   const AvailabilitySelector({
@@ -28,27 +24,31 @@ class _AvailabilitySelectorState extends State<AvailabilitySelector> {
   }
 
   void _updateAvailability(bool value) {
-    setState(() {
-      _availability = value;
-    });
-    widget.onChanged(value); // notify parent
+    setState(() => _availability = value);
+    widget.onChanged(value);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RadioListTile<bool>(
-          title: const Text("Online"),
-          value: true,
-          groupValue: _availability,
-          onChanged: (value) => _updateAvailability(value!),
-        ),
-        RadioListTile<bool>(
-          title: const Text("Offline"),
-          value: false,
-          groupValue: _availability,
-          onChanged: (value) => _updateAvailability(value!),
+        Row(
+          children: [
+            Radio<bool>(
+              value: true,
+              groupValue: _availability,
+              onChanged: (value) => _updateAvailability(value!),
+            ),
+            const Text("Online"),
+            const SizedBox(width: 24),
+            Radio<bool>(
+              value: false,
+              groupValue: _availability,
+              onChanged: (value) => _updateAvailability(value!),
+            ),
+            const Text("Offline"),
+          ],
         ),
         const SizedBox(height: 12),
         Text(

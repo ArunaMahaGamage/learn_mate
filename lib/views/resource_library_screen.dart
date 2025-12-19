@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../components/availability_selector.dart';
+import '../components/file_type_Selector.dart';
 import '../viewmodels/resource_provider.dart';
 import '../components/learning_card.dart';
 import '../core/routes.dart';
@@ -45,6 +46,7 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
   final resourcesURLCtrl = TextEditingController();
   final String subject = ModalRoute.of(context)!.settings.arguments as String;
   bool _selectedAvailability = true;
+  String _fileTypeSelector = "Web";
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
@@ -67,6 +69,13 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
               initialValue: _selectedAvailability,
                 onChanged: (value) {
                   _selectedAvailability = value;
+                } // You can now use _selectedAvailability anywhere in this screen debugPrint("Selected availability: $value"); },
+            ),
+            const SizedBox(height: 8),
+            FileTypeSelector(
+                initialValue: _fileTypeSelector,
+                onChanged: (value) {
+                  _fileTypeSelector = value;
                 } // You can now use _selectedAvailability anywhere in this screen debugPrint("Selected availability: $value"); },
             ),
           ],
