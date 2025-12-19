@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:learn_mate/models/settings.dart';
 import 'package:learn_mate/viewmodels/settings_provider.dart';
 import 'package:learn_mate/views/signup_screen.dart';
 import 'package:learn_mate/views/subject_screen.dart';
 import 'core/routes.dart';
+import 'core/localization_helper.dart';
 import 'views/splash_screen.dart';
 import 'views/login_screen.dart';
 import 'views/onboarding_screen.dart';
@@ -28,9 +30,29 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
+    
+    // Convert language to locale
+    final locale = LocalizationHelper.getLocaleFromLanguage(
+      settings.preferredLanguage,
+    );
+    
+    print('=== App Rebuild: Language changed to ${settings.preferredLanguage} ===');
+    print('=== Locale: ${locale.languageCode}_${locale.countryCode} ===');
+    
     return MaterialApp(
-      title: 'Rural Student Support',
+      title: 'LearnMate',
       debugShowCheckedModeBanner: false,
+      locale: locale,
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('ta', 'IN'),
+        Locale('si', 'LK'),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         colorSchemeSeed: const Color(0xFF1A73E8),
         useMaterial3: true,

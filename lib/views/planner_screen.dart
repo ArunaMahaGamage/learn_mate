@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../core/translation_helper.dart';
 import '../models/planner_item.dart';
 import '../viewmodels/auth_provider.dart';
 import '../viewmodels/planner_provider.dart';
 import '../components/planner_card.dart';
 import '../core/routes.dart';
+
 
 class PlannerScreen extends ConsumerWidget {
   const PlannerScreen({super.key});
@@ -20,21 +22,21 @@ class PlannerScreen extends ConsumerWidget {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Study Planner')),
+      appBar: AppBar(title: Text(getLocalizedString(ref, 'planner'))),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           //Pending Tasks Section (Prominent)
           Text(
-            'Pending Tasks (${pendingItems.length})',
+            '${getLocalizedString(ref, 'pending_tasks')}(${pendingItems.length})',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
           pendingItems.isEmpty
-              ? const Padding(
+              ? Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.0),
                   child: Center(
-                    child: Text('You have no pending tasks! Good job.'),
+                    child: Text(getLocalizedString(ref, 'no_pending_tasks')),
                   ),
                 )
               : ListView.builder(
@@ -60,14 +62,14 @@ class PlannerScreen extends ConsumerWidget {
           const Divider(height: 40),
           // Completed Tasks Section (Secondary)
           Text(
-            'Completed (${completedItems.length})',
+            '${getLocalizedString(ref, 'completed')} (${completedItems.length})',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 8),
           completedItems.isEmpty
-              ? const Padding(
+              ?  Padding(
                   padding: EdgeInsets.symmetric(vertical: 20.0),
-                  child: Center(child: Text('No completed tasks yet.')),
+                  child: Center(child: Text(getLocalizedString(ref, 'no_completed_tasks'))),
                 )
               : ListView.builder(
                   shrinkWrap: true,

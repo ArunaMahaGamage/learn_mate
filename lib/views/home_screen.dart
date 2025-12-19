@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/routes.dart';
+import '../core/translation_helper.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final tiles = [
       _HomeTile('Planner', Icons.event_note, Routes.planner),
       _HomeTile('Resources', Icons.menu_book, Routes.subject),
@@ -18,7 +20,7 @@ class HomeScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Dashboard')),
+      appBar: AppBar(title: Text(getLocalizedString(ref, 'home'))),
       body: GridView.count(
         crossAxisCount: 2,
         padding: const EdgeInsets.all(16),

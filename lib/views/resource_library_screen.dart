@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../viewmodels/resource_provider.dart';
 import '../components/learning_card.dart';
 import '../core/routes.dart';
+import '../core/translation_helper.dart';
 import '../models/lesson.dart';
 
 class ResourceLibraryScreen extends ConsumerWidget {
@@ -44,7 +45,7 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
-      title: const Text('Add Resources'),
+      title: Text(getLocalizedString(ref, 'resources')),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -56,7 +57,7 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(getLocalizedString(ref, 'cancel'))),
         FilledButton(
           onPressed: () async {
             final l = Lesson(
@@ -71,7 +72,7 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
             ref.read(resourcesProvider.notifier).addResource(l);
             if (context.mounted) Navigator.pop(context);
           },
-          child: const Text('Add'),
+          child: Text(getLocalizedString(ref, 'save')),
         ),
       ],
     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/routes.dart';
+import '../core/translation_helper.dart';
 
 // Subject model
 class Subject {
@@ -40,7 +41,7 @@ class SubjectsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Resources'),
+        title: Text(getLocalizedString(ref, 'resources')),
         centerTitle: true,
       ),
       body: GridView.builder(

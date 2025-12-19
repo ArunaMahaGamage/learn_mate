@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:convert';
 import '../viewmodels/auth_provider.dart';
 import '../core/routes.dart';
+import '../core/translation_helper.dart';
 
 /// Provider to access current Firebase user (Existing)
 final firebaseUserProvider = StreamProvider<User?>((ref) {
@@ -107,7 +108,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       context: context,
       builder: (dialogContext) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('Edit Profile'),
+          title: Text(getLocalizedString(ref, 'edit_profile')),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -190,12 +191,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Tap the camera icon to take a photo or choose from gallery',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                const SizedBox(height: 20),
                 TextField(
                   controller: nameController,
                   decoration: InputDecoration(
@@ -250,8 +245,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final userDataAsync = ref.watch(userDataProvider);
     final authController = ref.read(authControllerProvider);
 
+    final profileTitle = getLocalizedString(ref, 'profile');
+    
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: Text(profileTitle)),
       body: Center(
         child: userAsync.when(
           data: (user) {
@@ -323,7 +320,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           icon: const Icon(Icons.logout),
-                          label: const Text('Logout'),
+                          label:  Text(getLocalizedString(ref, 'logout')),
                           onPressed: () async {
                             try {
                               await authController.signOut();

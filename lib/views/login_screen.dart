@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/routes.dart';
 import '../viewmodels/auth_provider.dart';
 import '../components/custom_button.dart';
+import '../core/translation_helper.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
@@ -16,7 +17,7 @@ class LoginScreen extends ConsumerWidget {
     final passwordController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      appBar: AppBar(title: Text(getLocalizedString(ref, 'login'))),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),

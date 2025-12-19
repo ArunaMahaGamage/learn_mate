@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../viewmodels/chat_provider.dart';
+import '../core/translation_helper.dart';
 
-class AIAssistantScreen extends ConsumerWidget {
+class AIAssistantScreen extends ConsumerStatefulWidget {
   const AIAssistantScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AIAssistantScreen> createState() => _AIAssistantScreenState();
+}
+
+class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
+  @override
+  Widget build(BuildContext context) {
     final chatMessages = ref.watch(chatProvider);
     final notifier = ref.read(chatProvider.notifier);
     final chatController = TextEditingController();
@@ -26,7 +32,7 @@ class AIAssistantScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Assistant'),
+        title: Text(getLocalizedString(ref, 'ai_assistant')),
         actions: [
           IconButton(
             tooltip: 'Clear Conversation',
@@ -50,13 +56,12 @@ class AIAssistantScreen extends ConsumerWidget {
                   width: double.infinity,
                   color: Colors.redAccent,
                   padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: const Row(
+                  child:  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.wifi_off, color: Colors.white, size: 16),
                       SizedBox(width: 8),
-                      Text(
-                        'You are currently offline',
+                      Text(getLocalizedString(ref, 'you_are_currently_offline'),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -105,8 +110,8 @@ class AIAssistantScreen extends ConsumerWidget {
         children: [
           Icon(Icons.psychology, size: 80, color: Colors.grey.shade300),
           const SizedBox(height: 16),
-          const Text(
-            'Ask me anything about your studies!',
+           Text(
+            getLocalizedString(ref, 'ask_me_anything_about_your_studies'),
             style: TextStyle(color: Colors.grey, fontSize: 16),
           ),
           const Text(
@@ -173,19 +178,19 @@ class AIAssistantScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Clear Chat?'),
+        title: Text(getLocalizedString(ref, 'cancel')),
         content: const Text('This will delete all messages in this session.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(getLocalizedString(ref, 'cancel')),
           ),
           TextButton(
             onPressed: () {
               notifier.clearChat();
               Navigator.pop(ctx);
             },
-            child: const Text('Clear', style: TextStyle(color: Colors.red)),
+            child: Text(getLocalizedString(ref, 'delete'), style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
