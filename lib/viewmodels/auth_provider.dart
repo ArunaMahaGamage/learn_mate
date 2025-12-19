@@ -1,5 +1,10 @@
+import 'dart:developer';
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 
 final authProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.authStateChanges();
@@ -58,5 +63,64 @@ class AuthController {
 
   String? get currentUserEmail {
     return _auth.currentUser?.email;
+  }
+
+  /// Update user profile with new display name and/or profile photo
+  Future<void> updateUserProfile({
+    String? displayName,
+    File? profilePhotoFile,
+  }) async {
+    final user = _auth.currentUser;
+    if (user == null) throw Exception('No user logged in');
+
+    try {
+      final updateData = <String, dynamic>{
+        'email': user.email,
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      // Add display name if provided
+      if (displayName != null && displayName.isNotEmpty) {
+        updateData['displayName'] = displayName;
+      }
+
+      // Convert and add profile photo if provided
+      if (profilePhotoFile != null) {
+        final photoBase64 = await _convertImageToBase64(profilePhotoFile);
+        updateData['profilePhotoBase64'] = photoBase64;
+      }
+
+      // Update Firestore user document
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(updateData, SetOptions(merge: true));
+
+      // Update Firebase Auth user profile
+      await user.updateProfile(
+        displayName: displayName ?? user.displayName,
+      );
+
+      // Refresh user data
+      await user.reload();
+      log('Profile updated successfully in Firestore');
+    } catch (e) {
+      log('Update profile error: $e');
+      throw Exception('Failed to update profile: $e');
+    }
+  }
+
+  /// Convert image file to base64 string
+  Future<String> _convertImageToBase64(File imageFile) async {
+    try {
+      log('Converting image to base64...');
+      final bytes = await imageFile.readAsBytes();
+      final base64String = base64Encode(bytes);
+      log('Image converted to base64. Length: ${base64String.length}');
+      return base64String;
+    } catch (e) {
+      log('Base64 conversion error: $e');
+      throw Exception('Failed to convert image: $e');
+    }
   }
 }
