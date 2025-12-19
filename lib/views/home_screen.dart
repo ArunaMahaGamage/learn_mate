@@ -17,6 +17,7 @@ class HomeScreen extends ConsumerWidget {
       _HomeTile(getLocalizedString(ref, 'ai_assistant'), Icons.psychology, Routes.aiAssistant),
       _HomeTile(getLocalizedString(ref, 'profile'), Icons.person, Routes.profile),
       _HomeTile(getLocalizedString(ref, 'settings'), Icons.settings, Routes.settings),
+      _HomeTile(getLocalizedString(ref, 'stopwatch'), Icons.timer, Routes.stopwatch), 
     ];
 
     return Scaffold(

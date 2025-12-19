@@ -84,6 +84,13 @@ final _englishStrings = {
   'display_name': 'Display Name',
   'enter_your_name': 'Enter your name',
   'select_image_source': 'Select Image Source',
+  'stopwatch': 'Stopwatch',
+  'stop': 'Stop',
+  'start': 'Start',
+  'reset': 'Reset',
+  'set_countdown_time': 'Set Countdown Time',
+  'start_countdown': 'Start Countdown',
+  'stop_countdown': 'Stop Countdown',
 };
 
 final _tamilStrings = {
@@ -141,6 +148,13 @@ final _tamilStrings = {
   'display_name': 'காட்சி பெயர்',
   'enter_your_name': 'உங்கள் பெயரை உள்ளிடவும்',
   'select_image_source': 'பட மூலத்தைத் தேர்ந்தெடுக்கவும்',
+  'stopwatch': 'ஸ்டாப்வாச்',
+  'stop': 'நிறுத்து',
+  'start': 'தொடங்கு',
+  'reset': 'மீட்டமைக்கவும்',
+  'set_countdown_time': 'கவுண்ட்டவுன் நேரத்தை அமைக்கவும்',
+  'start_countdown': 'கவுண்ட்டவுன் தொடங்கவும்',
+  'stop_countdown': 'கவுண்ட்டவுன் நிறுத்தவும்',
 };
 
 final _sinhalaStrings = {
@@ -198,5 +212,12 @@ final _sinhalaStrings = {
   'display_name': 'ප්‍රදර්ශන නාමය',
   'enter_your_name': 'ඔබේ නම ඇතුළත් කරන්න',
   'select_image_source': 'පින්තූර මූලාශ්‍රය තෝරන්න',
+  'stopwatch': 'ස්ටොප්වොච්',
+  'stop': 'නවත්වන්න',
+  'start': 'ආරම්භ කරන්න',
+  'reset': 'ප්‍රතිසංස්කරණය කරන්න',
+  'set_countdown_time': 'ගණන් කිරීමේ කාලය සකසන්න',
+  'start_countdown': 'ගණන් කිරීම ආරම්භ කරන්න',
+  'stop_countdown': 'ගණන් කිරීම නවත්වන්න',
 };
 

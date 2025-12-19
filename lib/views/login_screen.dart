@@ -26,12 +26,13 @@ class LoginScreen extends ConsumerWidget {
               const SizedBox(height: 50),
               Center(child: Text('Rural Student Support', style: Theme.of(context).textTheme.headlineSmall)),
               const SizedBox(height: 50),
-              Image.network(
-                'https://mintbook.com/blog/wp-content/uploads/2019/08/5-Reasons-to-Invest-In-E-Learning-Tools-for-Your-Children.png',
-                //width: 300,
-                //height: 200,
-                fit: BoxFit.cover,
-              ),
+              Image.asset('assets/welcome.png', fit: BoxFit.cover),
+              // Image.network(
+              //   'https://mintbook.com/blog/wp-content/uploads/2019/08/5-Reasons-to-Invest-In-E-Learning-Tools-for-Your-Children.png',
+              //   //width: 300,
+              //   //height: 200,
+              //   fit: BoxFit.cover,
+              // ),
               const SizedBox(height: 50),
               // Email field
               TextField(

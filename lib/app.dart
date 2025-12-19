@@ -38,10 +38,7 @@ class App extends ConsumerWidget {
     final locale = LocalizationHelper.getLocaleFromLanguage(
       settings.preferredLanguage,
     );
-    
-    print('=== App Rebuild: Language changed to ${settings.preferredLanguage} ===');
-    print('=== Locale: ${locale.languageCode}_${locale.countryCode} ===');
-    
+   
     return MaterialApp(
       title: 'LearnMate',
       debugShowCheckedModeBanner: false,

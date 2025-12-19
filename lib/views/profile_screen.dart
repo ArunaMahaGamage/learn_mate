@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:learn_mate/viewmodels/profile_provider.dart';
 import 'dart:io';
 import 'dart:convert';
 import '../viewmodels/auth_provider.dart';
@@ -10,27 +10,6 @@ import '../core/routes.dart';
 import '../core/translation_helper.dart';
 
 
-final firebaseUserProvider = StreamProvider<User?>((ref) {
-  return FirebaseAuth.instance.authStateChanges();
-});
-
-
-final userDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
-  final authUser = ref.watch(firebaseUserProvider);
-  
-  return authUser.when(
-    data: (user) {
-      if (user == null) return Stream.value(null);
-      return FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .snapshots()
-          .map((snapshot) => snapshot.data());
-    },
-    loading: () => Stream.value(null),
-    error: (_, __) => Stream.value(null),
-  );
-});
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -59,38 +38,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           SnackBar(content: Text('Error picking image: $e')),
         );
       }
-    }
-  }
-
-  Future<void> _updateProfile(
-    User user,
-    AuthController authController,
-    String displayName,
-  ) async {
-    setState(() => _isUpdating = true);
-
-    try {
-      await authController.updateUserProfile(
-        displayName: displayName.isNotEmpty ? displayName : null,
-        profilePhotoFile: _selectedImage,
-      );
-
-      await user.reload();
-
-      if (mounted) {
-        setState(() => _selectedImage = null);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully!')),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _isUpdating = false);
     }
   }
 
@@ -218,10 +165,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   ? null
                   : () async {
                       Navigator.pop(context);
-                      await _updateProfile(
+                      await ref.read(profileViewModelProvider.notifier).updateProfile(
                         user,
                         authController,
                         nameController.text,
+                        localSelectedImage,
                       );
                       nameController.dispose();
                     },
@@ -320,7 +268,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           label:  Text(getLocalizedString(ref, 'logout')),
                           onPressed: () async {
                             try {
-                              await authController.signOut();
+
+                              await ref.read(profileViewModelProvider.notifier).logout();
+                              // authController.signOut();
                               if (context.mounted) {
                                 Navigator.pushNamedAndRemoveUntil(
                                   context,
