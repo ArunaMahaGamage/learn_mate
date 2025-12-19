@@ -139,14 +139,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Text(
-                                      'Select Image Source',
+                                    Text(
+                                      getLocalizedString(ref, 'select_image_source'),
                                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                     ),
                                     const SizedBox(height: 20),
                                     ListTile(
                                       leading: const Icon(Icons.camera_alt, color: Colors.blue),
-                                      title: const Text('Take Photo'),
+                                      title: Text(getLocalizedString(ref, 'take_photo')),
                                       onTap: () {
                                         Navigator.pop(bottomContext);
                                         _pickImage(source: ImageSource.camera).then((_) {
@@ -158,7 +158,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                     ),
                                     ListTile(
                                       leading: const Icon(Icons.image, color: Colors.green),
-                                      title: const Text('Choose from Gallery'),
+                                      title: Text(getLocalizedString(ref, 'choose_gallery')),
                                       onTap: () {
                                         Navigator.pop(bottomContext);
                                         _pickImage(source: ImageSource.gallery).then((_) {
@@ -194,8 +194,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 TextField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    labelText: 'Display Name',
-                    hintText: 'Enter your name',
+                    labelText: getLocalizedString(ref, 'display_name'),
+                    hintText: getLocalizedString(ref, 'enter_your_name'),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -211,7 +211,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 nameController.dispose();
                 Navigator.pop(context);
               },
-              child: const Text('Cancel'),
+              child: Text(getLocalizedString(ref, 'cancel')),
             ),
             ElevatedButton(
               onPressed: _isUpdating
@@ -231,7 +231,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Text('Save'),
+                  : Text(getLocalizedString(ref, 'save')),
             ),
           ],
         ),

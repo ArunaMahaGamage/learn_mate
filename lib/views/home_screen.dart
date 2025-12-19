@@ -9,14 +9,14 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tiles = [
-      _HomeTile('Planner', Icons.event_note, Routes.planner),
-      _HomeTile('Resources', Icons.menu_book, Routes.subject),
-      _HomeTile('Forum', Icons.forum, Routes.forum),
-      _HomeTile('Flashcards', Icons.style, Routes.flashcards),
-      _HomeTile('Quiz', Icons.quiz, Routes.quiz),
-      _HomeTile('AI Assistant', Icons.psychology, Routes.aiAssistant),
-      _HomeTile('Profile', Icons.person, Routes.profile),
-      _HomeTile('Settings', Icons.settings, Routes.settings),
+      _HomeTile(getLocalizedString(ref, 'planner'), Icons.event_note, Routes.planner),
+      _HomeTile(getLocalizedString(ref, 'resources'), Icons.menu_book, Routes.subject),
+      _HomeTile(getLocalizedString(ref, 'forum'), Icons.forum, Routes.forum),
+      _HomeTile(getLocalizedString(ref, 'flashcards'), Icons.style, Routes.flashcards),
+      _HomeTile(getLocalizedString(ref, 'quiz'), Icons.quiz, Routes.quiz),
+      _HomeTile(getLocalizedString(ref, 'ai_assistant'), Icons.psychology, Routes.aiAssistant),
+      _HomeTile(getLocalizedString(ref, 'profile'), Icons.person, Routes.profile),
+      _HomeTile(getLocalizedString(ref, 'settings'), Icons.settings, Routes.settings),
     ];
 
     return Scaffold(

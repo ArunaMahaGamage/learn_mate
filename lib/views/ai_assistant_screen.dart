@@ -114,8 +114,8 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
             getLocalizedString(ref, 'ask_me_anything_about_your_studies'),
             style: TextStyle(color: Colors.grey, fontSize: 16),
           ),
-          const Text(
-            'Try: "Explain Newton\'s Third Law"',
+          Text(
+            getLocalizedString(ref, 'try_explain_newton_third_law'),
             style: TextStyle(color: Colors.grey, fontSize: 12),
           ),
         ],
@@ -142,7 +142,7 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                 controller: controller,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                  hintText: 'Type your question...',
+                  hintText: getLocalizedString(ref, 'type_your_question'),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25),
                     borderSide: BorderSide.none,

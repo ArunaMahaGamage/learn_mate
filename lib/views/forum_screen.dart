@@ -51,11 +51,11 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(controller: titleCtrl, decoration: const InputDecoration(labelText: 'Title')),
+          TextField(controller: titleCtrl, decoration: InputDecoration(labelText: getLocalizedString(ref, 'title'))),
           const SizedBox(height: 8),
-          TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'Description')),
+          TextField(controller: descCtrl, decoration: InputDecoration(labelText: getLocalizedString(ref, 'description'))),
           const SizedBox(height: 8),
-          TextField(controller: tagsCtrl, decoration: const InputDecoration(labelText: 'Tags')),
+          TextField(controller: tagsCtrl, decoration: InputDecoration(labelText: getLocalizedString(ref, 'tags'))),
         ],
       ),
       actions: [

@@ -69,6 +69,7 @@ class SettingsScreen extends ConsumerWidget {
               final selected = await _showLanguagePicker(
                 context,
                 settings.preferredLanguage,
+                ref
               );
               if (selected != null && context.mounted) {
                 notifier.setPreferredLanguage(selected);
@@ -105,12 +106,13 @@ class SettingsScreen extends ConsumerWidget {
 Future<String?> _showLanguagePicker(
   BuildContext context,
   String current,
+  WidgetRef ref,
 ) async {
   const languages = ['English', 'Tamil', 'Sinhala'];
   return await showDialog<String>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Select Language'),
+      title: Text(getLocalizedString(ref, 'select_language')),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,

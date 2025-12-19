@@ -27,7 +27,7 @@ class FlashcardScreen extends ConsumerWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton.icon(
-                onPressed: () => _showAddDialog(context, notifier),
+                onPressed: () => _showAddDialog(context, notifier, ref),
                 icon: const Icon(Icons.add),
                 label: Text(getLocalizedString(ref, 'add_new_card'),
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -141,32 +141,32 @@ class FlashcardScreen extends ConsumerWidget {
     );
   }
 
-  void _showAddDialog(BuildContext context, FlashcardNotifier notifier) {
+  void _showAddDialog(BuildContext context, FlashcardNotifier notifier, WidgetRef ref) {
     final frontController = TextEditingController();
     final backController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text("New Flashcard"),
+        title: Text(getLocalizedString(ref, 'new_flashcard')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: frontController,
-              decoration: const InputDecoration(labelText: 'Front (Question)'),
+              decoration: InputDecoration(labelText: getLocalizedString(ref, 'front_question')),
               autofocus: true,
             ),
             TextField(
               controller: backController,
-              decoration: const InputDecoration(labelText: 'Back (Answer)'),
+              decoration: InputDecoration(labelText: getLocalizedString(ref, 'back_answer')),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text("Cancel"),
+            child: Text(getLocalizedString(ref, 'cancel')),
           ),
           ElevatedButton(
             onPressed: () {
@@ -176,7 +176,7 @@ class FlashcardScreen extends ConsumerWidget {
                 Navigator.pop(ctx);
               }
             },
-            child: const Text("Save"),
+            child: Text(getLocalizedString(ref, 'save')),
           ),
         ],
       ),
