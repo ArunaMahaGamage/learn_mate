@@ -23,6 +23,9 @@ import 'views/profile_screen.dart';
 import 'views/settings_screen.dart';
 import 'views/ai_assistant_screen.dart';
 import 'views/flashcard_screen.dart';
+import 'views/stopwatch_screen.dart';
+
+
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -89,6 +92,9 @@ class App extends ConsumerWidget {
         Routes.settings: (_) => const SettingsScreen(),
         Routes.aiAssistant: (context) => const AIAssistantScreen(),
         Routes.flashcards: (context) => const FlashcardScreen(),
+        Routes.stopwatch: (context) => const StopwatchScreen(),
+      
+   
       },
     );
   }

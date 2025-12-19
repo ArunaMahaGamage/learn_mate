@@ -9,7 +9,7 @@ final resourcesProvider = StateNotifierProvider<ResourcesNotifier, List<Lesson>>
 
 class ResourcesNotifier extends StateNotifier<List<Lesson>> {
   ResourcesNotifier() : super([]) {
-    loadInitial();
+    //loadInitial();
   }
 
   final _firestore = FirebaseFirestore.instance;
@@ -27,6 +27,38 @@ class ResourcesNotifier extends StateNotifier<List<Lesson>> {
     final list = snap.docs.map((d) => Lesson.fromMap({'id': d.id, ...d.data()})).toList();
     state = list;
     _box.put('list', list.map((e) => e.toMap()).toList());
+  }
+
+  Future<void> loadSubject(String subject) async {
+
+    try {
+      // Offline first
+      final cached = _box.get('list$subject', defaultValue: []);
+      if (cached is List) {
+        state = cached
+            .map((e) => Lesson.fromMap(Map<String, dynamic>.from(e)))
+            .where((lesson) => lesson.subject == subject)
+            .toList();
+      }
+    } catch(e) {
+      print(e);
+    }
+
+    try {
+      // Online sync
+      final snap = await _firestore
+          .collection('resources')
+          .where(
+          'subject', isEqualTo: subject)
+          //.orderBy('createdAt', descending: true)
+          .get();
+      final list = snap.docs.map((d) =>
+          Lesson.fromMap({'id': d.id, ...d.data()})).toList();
+      state = list;
+      _box.put('list$subject', list.map((e) => e.toMap()).toList());
+    } catch(e) {
+      print(e);
+    }
   }
 
   Future<void> addResource(Lesson lesson) async {

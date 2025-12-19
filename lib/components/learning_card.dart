@@ -83,7 +83,7 @@ class LearningCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    lesson.offlineAvailable ? "Available Offline" : "Download Required",
+                    lesson.offlineAvailable ? "Available Offline" : "Available Online",
                     style: const TextStyle(fontSize: 14),
                   ),
                 ],

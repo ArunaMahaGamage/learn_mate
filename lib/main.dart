@@ -11,6 +11,7 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
   await initFirebase();
   await initHive();
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const ProviderScope(child: App()));
 }

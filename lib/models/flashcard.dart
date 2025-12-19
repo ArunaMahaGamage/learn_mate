@@ -12,6 +12,19 @@ class Flashcard {
   });
 
   Map<String, dynamic> toMap() {
-    return {'front': front, 'back': back, 'isMastered': isMastered};
+    return {
+      'front': front,
+      'back': back,
+      'isMastered': isMastered,
+    };
+  }
+
+  factory Flashcard.fromMap(String id, Map<String, dynamic> map) {
+    return Flashcard(
+      id: id,
+      front: map['front'] ?? '',
+      back: map['back'] ?? '',
+      isMastered: map['isMastered'] ?? false,
+    );
   }
 }
