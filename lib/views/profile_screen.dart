@@ -9,12 +9,12 @@ import '../viewmodels/auth_provider.dart';
 import '../core/routes.dart';
 import '../core/translation_helper.dart';
 
-/// Provider to access current Firebase user (Existing)
+
 final firebaseUserProvider = StreamProvider<User?>((ref) {
   return FirebaseAuth.instance.authStateChanges();
 });
 
-/// Load user data from Firebase
+
 final userDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
   final authUser = ref.watch(firebaseUserProvider);
   
@@ -113,13 +113,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Display selected image or current profile
+                
                 Center(
                   child: Stack(
                     children: [
                       CircleAvatar(
                         radius: 60,
-                        key: ValueKey(localSelectedImage?.path), // Force rebuild
+                        key: ValueKey(localSelectedImage?.path),
                         backgroundImage: localSelectedImage != null
                             ? FileImage(localSelectedImage!)
                             : (userData?['profilePhotoBase64'] != null
@@ -268,7 +268,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Profile photo with edit button
+                      // Profile edit button
                       Stack(
                         children: [
                           CircleAvatar(
@@ -301,21 +301,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // User name from Firestore
                       Text(
                         userData?['displayName'] ?? user.displayName ?? 'Unknown User',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 8),
 
-                      // Email address
                       Text(
                         user.email ?? 'No email available',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 40),
 
-                      // Logout button
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
