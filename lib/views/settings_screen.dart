@@ -108,7 +108,7 @@ Future<String?> _showLanguagePicker(
   String current,
   WidgetRef ref,
 ) async {
-  const languages = ['English', 'Tamil', 'Sinhala'];
+  const languages = ['English', 'தமிழ்', 'සිංහල'];
   return await showDialog<String>(
     context: context,
     builder: (ctx) => AlertDialog(

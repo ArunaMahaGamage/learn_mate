@@ -5,9 +5,9 @@ class LocalizationHelper {
 
   static Locale getLocaleFromLanguage(String language) {
     switch (language.toLowerCase()) {
-      case 'tamil':
+      case 'தமிழ்':
         return const Locale('ta', 'IN');
-      case 'sinhala':
+      case 'සිංහල':
         return const Locale('si', 'LK');
       case 'english':
       default:
@@ -15,24 +15,12 @@ class LocalizationHelper {
     }
   }
 
-  static String getLanguageFromLocale(Locale locale) {
-    switch (locale.languageCode) {
-      case 'ta':
-        return 'Tamil';
-      case 'si':
-        return 'Sinhala';
-      case 'en':
-      default:
-        return 'English';
-    }
-  }
-
 
   static Map<String, dynamic> getLocalizedStrings(String language) {
     switch (language.toLowerCase()) {
-      case 'tamil':
+      case 'தமிழ்':
         return _tamilStrings;
-      case 'sinhala':
+      case 'සිංහල':
         return _sinhalaStrings;
       case 'english':
       default:
