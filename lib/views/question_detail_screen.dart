@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../viewmodels/answer_provider.dart';
 import '../viewmodels/forum_provider.dart';
 
 class QuestionDetailScreen extends ConsumerWidget {
@@ -8,6 +9,7 @@ class QuestionDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final answers = ref.watch(answerProvider);
     final Question q = ModalRoute.of(context)!.settings.arguments as Question;
     final controller = TextEditingController();
 
@@ -86,7 +88,13 @@ class QuestionDetailScreen extends ConsumerWidget {
                   Column(
                     children: [
                       Card(
-                        child: ListTile(
+                        child: answers.isEmpty
+                            ? const Center(
+                          child: Text(
+                            "No answers yet. Tap + to add one!",
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ) : ListTile(
                           leading: const CircleAvatar(child: Icon(Icons.person)),
                           title: const Text("Demo Answer"),
                           subtitle: Text(
