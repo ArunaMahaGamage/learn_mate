@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/quiz.dart';
+import '../core/translation_helper.dart';
 import '../viewmodels/quiz_provider.dart';
 
 Quiz _createEmptyQuiz() => Quiz(
@@ -88,8 +89,6 @@ class _QuizCreationScreenState extends ConsumerState<QuizCreationScreen> {
         _initialQuiz = args;
         _titleController.text = args.title;
         _descriptionController.text = args.description;
-
-        ref.read(quizFormNotifierProvider.notifier).state = args;
       }
       _titleController.addListener(_updateMetadata);
       _descriptionController.addListener(_updateMetadata);
@@ -221,7 +220,7 @@ class _QuizCreationScreenState extends ConsumerState<QuizCreationScreen> {
               width: double.infinity,
               child: OutlinedButton.icon(
                 icon: const Icon(Icons.add),
-                label: const Text('Add Question'),
+                label: Text(getLocalizedString(ref, 'save')),
                 onPressed: notifier.addQuestion,
               ),
             ),

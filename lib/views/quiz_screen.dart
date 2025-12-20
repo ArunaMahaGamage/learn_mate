@@ -4,6 +4,7 @@ import '../viewmodels/quiz_provider.dart';
 import '../models/quiz.dart';
 import '../core/routes.dart';
 import '../components/quiz_list_tile.dart'; //custom component
+import '../core/translation_helper.dart';
 
 class QuizScreen extends ConsumerWidget {
   const QuizScreen({super.key});
@@ -36,7 +37,7 @@ class QuizListView extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Available Quizzes')),
+      appBar: AppBar(title: Text(getLocalizedString(ref, 'quiz'))),
       body: RefreshIndicator(
         onRefresh: listNotifier.loadQuizzes,
         child: quizzes.isEmpty
@@ -56,7 +57,7 @@ class QuizListView extends ConsumerWidget {
           Navigator.pushNamed(context, Routes.quizCreation, arguments: null);
         },
         icon: const Icon(Icons.add_box),
-        label: const Text('Create Quiz'),
+        label: Text(getLocalizedString(ref, 'save')),
       ),
     );
   }
@@ -207,7 +208,7 @@ class _QuestionCard extends StatelessWidget {
   }
 }
 
-class _QuizResultView extends StatelessWidget {
+class _QuizResultView extends ConsumerWidget {
   final QuizResult result;
   final Quiz quiz;
   final VoidCallback onTryAgain;
@@ -221,7 +222,7 @@ class _QuizResultView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isPassed = result.scorePercentage >= 70;
 
     return Scaffold(
@@ -264,14 +265,14 @@ class _QuizResultView extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: onEnd,
-                  child: const Text('Exit'),
+                  child: Text(getLocalizedString(ref, 'cancel')),
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: FilledButton(
                   onPressed: onTryAgain,
-                  child: const Text('Try Again'),
+                  child: Text(getLocalizedString(ref, 'save')),
                 ),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../viewmodels/forum_provider.dart';
+import '../core/translation_helper.dart';
 
 class QuestionDetailScreen extends ConsumerWidget {
   const QuestionDetailScreen({super.key});
@@ -36,7 +37,7 @@ class QuestionDetailScreen extends ConsumerWidget {
                   context,
                 ).showSnackBar(const SnackBar(content: Text('Answer posted')));
               },
-              child: const Text('Post Answer'),
+              child: Text(getLocalizedString(ref, 'save')),
             ),
             const SizedBox(height: 12),
             const Text('Answers (live view omitted in scaffold)'),
