@@ -89,7 +89,7 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: titleCtrl.text,
               subject: subject,
-              type: 'pdf',
+              type: _fileTypeSelector,
               downloadUrl: resourcesURLCtrl.text,
               offlineAvailable: _selectedAvailability,
               createdAt: DateTime.now(),
