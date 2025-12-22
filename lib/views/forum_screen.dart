@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../viewmodels/forum_provider.dart';
 import '../core/routes.dart';
+import '../core/translation_helper.dart';
 
 class ForumScreen extends ConsumerWidget {
   const ForumScreen({super.key});
@@ -11,7 +12,7 @@ class ForumScreen extends ConsumerWidget {
     final questions = ref.watch(forumProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Community Q&A')),
+      appBar: AppBar(title: Text(getLocalizedString(ref, 'forum'))),
       body: ListView.builder(
         itemCount: questions.length,
         itemBuilder: (_, i) {
@@ -46,19 +47,19 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
-      title: const Text('Add Community Q&A'),
+      title: Text(getLocalizedString(ref, 'forum')),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(controller: titleCtrl, decoration: const InputDecoration(labelText: 'Title')),
+          TextField(controller: titleCtrl, decoration: InputDecoration(labelText: getLocalizedString(ref, 'title'))),
           const SizedBox(height: 8),
-          TextField(controller: descCtrl, decoration: const InputDecoration(labelText: 'Description')),
+          TextField(controller: descCtrl, decoration: InputDecoration(labelText: getLocalizedString(ref, 'description'))),
           const SizedBox(height: 8),
-          TextField(controller: tagsCtrl, decoration: const InputDecoration(labelText: 'Tags')),
+          TextField(controller: tagsCtrl, decoration: InputDecoration(labelText: getLocalizedString(ref, 'tags'))),
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(getLocalizedString(ref, 'cancel'))),
         FilledButton(
           onPressed: () async {
             final q = Question(
@@ -72,7 +73,7 @@ Future<void> _addDialog(BuildContext context, WidgetRef ref) async {
             ref.read(forumProvider.notifier).addQuestion(q);
             if (context.mounted) Navigator.pop(context);
           },
-          child: const Text('Add'),
+          child: Text(getLocalizedString(ref, 'save')),
         ),
       ],
     ),

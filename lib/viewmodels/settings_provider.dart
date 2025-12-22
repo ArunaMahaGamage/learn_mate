@@ -40,7 +40,9 @@ class SettingsNotifier extends StateNotifier<Settings> {
   }
 
   void setPreferredLanguage(String language) {
+    print('=== setPreferredLanguage called: $language ===');
     state = state.copyWith(preferredLanguage: language);
+    print('=== Settings state updated: ${state.preferredLanguage} ===');
     _saveSettings();
   }
 }

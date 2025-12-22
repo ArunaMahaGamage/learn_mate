@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../core/routes.dart';
+import '../core/translation_helper.dart';
 
 /// Provider for FirebaseAuth
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
@@ -51,7 +52,7 @@ class SignupScreen extends ConsumerWidget {
     final passwordController = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up'),
+      appBar: AppBar(title: Text(getLocalizedString(ref, 'signup')),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -109,7 +110,7 @@ class SignupScreen extends ConsumerWidget {
                       emailController.text.trim(),
                       passwordController.text.trim(),
                     ),
-                    child: const Text('Create Account'),
+                    child: Text(getLocalizedString(ref, 'signup')),
                   );
                 },
                 loading: () => const CircularProgressIndicator(),

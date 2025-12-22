@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../core/translation_helper.dart';
 import '../viewmodels/flashcard_provider.dart';
 import '../components/flashcard_widget.dart';
 import '../models/flashcard.dart';
@@ -14,7 +15,7 @@ class FlashcardScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flashcards'),
+        title: Text(getLocalizedString(ref, 'flashcards')),
         centerTitle: true,
         elevation: 0,
       ),
@@ -26,10 +27,9 @@ class FlashcardScreen extends ConsumerWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton.icon(
-                onPressed: () => _showAddDialog(context, notifier),
+                onPressed: () => _showAddDialog(context, notifier, ref),
                 icon: const Icon(Icons.add),
-                label: const Text(
-                  'Add New Card',
+                label: Text(getLocalizedString(ref, 'add_new_card'),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
@@ -42,7 +42,7 @@ class FlashcardScreen extends ConsumerWidget {
           ),
           Expanded(
             child: cards.isEmpty
-                ? _buildEmptyState()
+                ? _buildEmptyState(ref)
                 : Column(
                     children: [
                       Expanded(
@@ -95,19 +95,18 @@ class FlashcardScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(WidgetRef ref) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.style_outlined, size: 80, color: Colors.grey.shade300),
           const SizedBox(height: 16),
-          const Text(
-            "No flashcards found.",
+          Text(getLocalizedString(ref, 'no_flashcards_found'),
             style: TextStyle(color: Colors.grey),
           ),
-          const Text(
-            "Start adding cards for your exams!",
+          Text(
+            getLocalizedString(ref, 'start_adding_cards_for_your_exams'),
             style: TextStyle(color: Colors.grey, fontSize: 12),
           ),
         ],
@@ -142,32 +141,32 @@ class FlashcardScreen extends ConsumerWidget {
     );
   }
 
-  void _showAddDialog(BuildContext context, FlashcardNotifier notifier) {
+  void _showAddDialog(BuildContext context, FlashcardNotifier notifier, WidgetRef ref) {
     final frontController = TextEditingController();
     final backController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text("New Flashcard"),
+        title: Text(getLocalizedString(ref, 'new_flashcard')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: frontController,
-              decoration: const InputDecoration(labelText: 'Front (Question)'),
+              decoration: InputDecoration(labelText: getLocalizedString(ref, 'front_question')),
               autofocus: true,
             ),
             TextField(
               controller: backController,
-              decoration: const InputDecoration(labelText: 'Back (Answer)'),
+              decoration: InputDecoration(labelText: getLocalizedString(ref, 'back_answer')),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text("Cancel"),
+            child: Text(getLocalizedString(ref, 'cancel')),
           ),
           ElevatedButton(
             onPressed: () {
@@ -177,7 +176,7 @@ class FlashcardScreen extends ConsumerWidget {
                 Navigator.pop(ctx);
               }
             },
-            child: const Text("Save"),
+            child: Text(getLocalizedString(ref, 'save')),
           ),
         ],
       ),

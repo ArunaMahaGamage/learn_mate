@@ -13,22 +13,19 @@ class OnboardingScreen extends StatelessWidget {
           _Slide(
             title: 'Offline Learning',
             desc: 'Download lessons and access them anytime',
-            image:
-                'https://i.pinimg.com/736x/3b/53/b9/3b53b997556ce4993a7825ea0fa44fe9.jpg',
+            image:'assets/on1.jpg',
             colors: Colors.white,
           ),
           _Slide(
             title: 'Study Planner',
             desc: 'Organize your study schedule easily',
-            image:
-                'https://i.pinimg.com/736x/85/57/8a/85578a047e5cef40a2889aaf8df1b4b7.jpg',
+            image:'assets/on2.jpg',
             colors: Colors.white,
           ),
           _Slide(
             title: 'Community Q&A',
             desc: 'Ask questions and get answers',
-            image:
-                'https://i.pinimg.com/736x/37/a0/c6/37a0c608c8ab59345b79e10b8af6cfcb.jpg',
+            image:'assets/on3.jpg',
             colors: Colors.black,
           ),
         ],
@@ -60,7 +57,7 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        image: DecorationImage(image: NetworkImage(image), fit: BoxFit.cover),
+        image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

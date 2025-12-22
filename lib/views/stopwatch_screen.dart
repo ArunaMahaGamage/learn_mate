@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../core/translation_helper.dart';
 import '../viewmodels/stopwatch_provider.dart';  // Import the Stopwatch provider
 
 class StopwatchScreen extends ConsumerStatefulWidget {
@@ -21,7 +22,7 @@ class _StopwatchScreenState extends ConsumerState<StopwatchScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stopwatch'),
+        title: Text(getLocalizedString(ref, 'stopwatch')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -41,7 +42,7 @@ class _StopwatchScreenState extends ConsumerState<StopwatchScreen> {
               onPressed: () {
                 ref.read(stopwatchProvider.notifier).toggleStopwatch();
               },
-              child: Text(stopwatchState.isRunning ? 'Stop' : 'Start'),
+              child: Text(stopwatchState.isRunning ? getLocalizedString(ref, 'stop') : getLocalizedString(ref, 'start')),
             ),
             const SizedBox(height: 10),
 
@@ -50,12 +51,12 @@ class _StopwatchScreenState extends ConsumerState<StopwatchScreen> {
               onPressed: () {
                 ref.read(stopwatchProvider.notifier).resetStopwatch();
               },
-              child: const Text('Reset'),
+              child: Text(getLocalizedString(ref, 'reset')),
             ),
             const SizedBox(height: 20),
 
             // Countdown Time Inputs (H:M:S)
-            Text('Set Countdown Time'),
+            Text(getLocalizedString(ref, 'set_countdown_time')),
             const SizedBox(height: 10),
 
             Row(
@@ -103,7 +104,7 @@ class _StopwatchScreenState extends ConsumerState<StopwatchScreen> {
                 );
                 ref.read(stopwatchProvider.notifier).startCountdown(totalSeconds);
               },
-              child: const Text('Start Countdown'),
+              child: Text(getLocalizedString(ref, 'start_countdown')),
             ),
             const SizedBox(height: 20),
 
@@ -112,7 +113,7 @@ class _StopwatchScreenState extends ConsumerState<StopwatchScreen> {
               onPressed: () {
                 ref.read(stopwatchProvider.notifier).stopCountdown();
               },
-              child: const Text('Stop Countdown'),
+              child: Text(getLocalizedString(ref, 'stop_countdown')),
             ),
           ],
         ),
